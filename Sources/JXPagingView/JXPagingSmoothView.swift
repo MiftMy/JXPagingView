@@ -8,17 +8,23 @@
 
 import UIKit
 
-@objc public protocol JXPagingSmoothViewListViewDelegate {
+public protocol JXPagingSmoothViewListViewDelegate: NSObjectProtocol {
     /// 返回listView。如果是vc包裹的就是vc.view；如果是自定义view包裹的，就是自定义view自己。
     func listView() -> UIView
     /// 返回JXPagerSmoothViewListViewDelegate内部持有的UIScrollView或UITableView或UICollectionView
     func listScrollView() -> UIScrollView
-    @objc optional func listDidAppear()
-    @objc optional func listDidDisappear()
+	func listDidAppear()
+	func listDidDisappear()
 }
 
-@objc
-public protocol JXPagingSmoothViewDataSource {
+
+public extension JXPagingSmoothViewListViewDelegate  {
+	func listDidAppear() {}
+	func listDidDisappear() {}
+}
+
+
+public protocol JXPagingSmoothViewDataSource: NSObjectProtocol {
     /// 返回页面header的高度
     func heightForPagingHeader(in pagingView: JXPagingSmoothView) -> CGFloat
     /// 返回页面header视图
@@ -35,9 +41,14 @@ public protocol JXPagingSmoothViewDataSource {
     func pagingView(_ pagingView: JXPagingSmoothView, initListAtIndex index: Int) -> JXPagingSmoothViewListViewDelegate
 }
 
-@objc
-public protocol JXPagingSmoothViewDelegate {
-    @objc optional func pagingSmoothViewDidScroll(_ scrollView: UIScrollView)
+
+public protocol JXPagingSmoothViewDelegate: NSObjectProtocol {
+	func pagingSmoothViewDidScroll(_ scrollView: UIScrollView)
+}
+
+
+public extension JXPagingSmoothViewDelegate {
+	func pagingSmoothViewDidScroll(_ scrollView: UIScrollView) {}
 }
 
 
@@ -241,7 +252,7 @@ open class JXPagingSmoothView: UIView {
         if count <= 0 || index >= count {
             return
         }
-        listDict[index]?.listDidAppear?()
+        listDict[index]?.listDidAppear()
     }
 
     func listDidDisappear(at index: Int) {
@@ -250,7 +261,7 @@ open class JXPagingSmoothView: UIView {
         if count <= 0 || index >= count {
             return
         }
-        listDict[index]?.listDidDisappear?()
+        listDict[index]?.listDidDisappear()
     }
 
     /// 列表左右切换滚动结束之后，需要把pagerHeaderContainerView添加到当前index的列表上面
@@ -324,7 +335,7 @@ extension JXPagingSmoothView: UICollectionViewDataSource, UICollectionViewDelega
     }
 
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        delegate?.pagingSmoothViewDidScroll?(scrollView)
+        delegate?.pagingSmoothViewDidScroll(scrollView)
         let indexPercent = scrollView.contentOffset.x/scrollView.bounds.size.width
         let index = Int(scrollView.contentOffset.x/scrollView.bounds.size.width)
         let listScrollView = listDict[index]?.listScrollView()

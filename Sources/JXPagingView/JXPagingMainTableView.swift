@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc public protocol JXPagingMainTableViewGestureDelegate {
+public protocol JXPagingMainTableViewGestureDelegate: NSObjectProtocol {
     //如果headerView（或其他地方）有水平滚动的scrollView，当其正在左右滑动的时候，就不能让列表上下滑动，所以有此代理方法进行对应处理
     func mainTableViewGestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool
 }

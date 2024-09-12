@@ -18,7 +18,7 @@ class NestSubjectViewController: BaseViewController, JXSegmentedListContainerVie
         // Do any additional setup after loading the view.
     }
 
-    override func mainTableViewGestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+	override func mainTableViewGestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         //禁止Nest嵌套效果的时候，上下和左右都可以滚动
         if otherGestureRecognizer.view == nestContentScrollView {
             return false

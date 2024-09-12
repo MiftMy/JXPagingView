@@ -109,6 +109,14 @@ class BaseViewController: UIViewController, JXSegmentedViewDelegate {
     func segmentedView(_ segmentedView: JXSegmentedView, didSelectedItemAt index: Int) {
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = (index == 0)
     }
+
+	func mainTableViewGestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+		//禁止segmentedView左右滑动的时候，上下和左右都可以滚动
+		if otherGestureRecognizer == segmentedView.collectionView.panGestureRecognizer {
+			return false
+		}
+		return gestureRecognizer.isKind(of: UIPanGestureRecognizer.self) && otherGestureRecognizer.isKind(of: UIPanGestureRecognizer.self)
+	}
 }
 
 extension BaseViewController: JXPagingViewDelegate {
@@ -135,11 +143,5 @@ extension BaseViewController: JXPagingViewDelegate {
 }
 
 extension BaseViewController: JXPagingMainTableViewGestureDelegate {
-    func mainTableViewGestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        //禁止segmentedView左右滑动的时候，上下和左右都可以滚动
-        if otherGestureRecognizer == segmentedView.collectionView.panGestureRecognizer {
-            return false
-        }
-        return gestureRecognizer.isKind(of: UIPanGestureRecognizer.self) && otherGestureRecognizer.isKind(of: UIPanGestureRecognizer.self)
-    }
+
 }
