@@ -94,6 +94,7 @@ open class JXPagingView: UIView {
     public var automaticallyDisplayListVerticalScrollIndicator = true
     /// 当allowsCacheList为true时，请务必实现代理方法`func pagingView(_ pagingView: JXPagingView, listIdentifierAtIndex index: Int) -> String`
     public var allowsCacheList: Bool = false
+    public var itemClickedBlock: ((Int) -> Void)?
     public private(set) var currentScrollingListView: UIScrollView?
     internal var currentList: JXPagingViewListViewDelegate?
     private var currentIndex: Int = 0
@@ -442,6 +443,7 @@ extension JXPagingView: JXPagingListContainerViewDelegate {
 
     public func listContainerView(_ listContainerView: JXPagingListContainerView, listDidAppearAt index: Int) {
         currentScrollingListView = validListDict[index]?.listScrollView()
+        itemClickedBlock?(index)
         for listItem in validListDict.values {
             if listItem === validListDict[index] {
                 listItem.listScrollView().scrollsToTop = true
